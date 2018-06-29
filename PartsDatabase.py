@@ -8,6 +8,7 @@ import webbrowser
 conn = sqlite3.connect('Part.db')
 c = conn.cursor()
 
+driver()
 def driver():
     create_table()
     print ("Welcome to the Epiq Spare Parts tracking application!")
