@@ -8,7 +8,6 @@ import webbrowser
 conn = sqlite3.connect('Part.db')
 c = conn.cursor()
 
-driver()
 def driver():
     create_table()
     print ("Welcome to the Epiq Spare Parts tracking application!")
@@ -102,7 +101,8 @@ def select_priority(priority):
    
 
     
-create_table()
+#create_table()
+driver()
 #part_entry()
 #part_search()
 #data_entry()
