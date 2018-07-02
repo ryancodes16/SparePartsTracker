@@ -10,10 +10,10 @@ c = conn.cursor()
 
 def driver():
       create_table()
-      #print ("Welcome to the Epiq Spare Parts tracking application!")
-      #print ("For any needed updates or help email rregier@epiq-solutions.com")
+      print ("Welcome to the Epiq Spare Parts tracking application!")
+      print ("For any needed updates or help email rregier@epiq-solutions.com")
       #time.sleep(5)
-      #print ("The following code run will be demo code to showcase how the Spare Parts Tracker is light-weight yet powerful and useful.")
+      print ("The following code run will be demo code to showcase how the Spare Parts Tracker is light-weight yet powerful and useful.")
       #time.sleep(5)
       for i in range(5):
                print(" ")
@@ -100,21 +100,29 @@ def select_priority(priority):
         print(row)
 
 def delete_parts():
-##        print ("Enter the serial number of the part you would like to delete from the database")
-##        delete = "12345"
+    cont = True
+    while (cont == True):
+        print ("Enter the serial number of the part you would like to delete from the database")
+        delete = input()
         c.execute("SELECT * FROM PartDB")
-##        c.execute("UPDATE PartDB SET Part = '99' where Part = '12345'")
-##        c.execute("DELETE FROM PartDB WHERE Part=?", (delete,))
-##        [print(row) for row in c.fetchall()]
-##        print('done')
-        c.execute('DELETE FROM PartDB WHERE Part = 12345')
+        ##  c.execute("UPDATE PartDB SET Part = '99' where Part = '12345'")
+        c.execute("DELETE FROM PartDB WHERE Part=?", (delete,))
+        #c.execute('DELETE FROM PartDB WHERE Part = 12345')
         conn.commit()
-        
-        
+        print("Successfully executed!")
+        print ("Continue deleting more parts? [y/n]")
+        response = input()
+        if(response == "y"):
+            cont = True
+        else:
+            cont = False
+            print ("Have a nice life :)")
+def clear_database():
+    c.execute("SELECT * FROM PartDB")
+    c.execute("DELETE * FROM PartDB")
+    conn.commit()
+    print ("Database cleared. All previous data is deleted")
     
-   
-   
-
     
 #create_table()
 driver()
