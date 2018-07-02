@@ -9,6 +9,7 @@ conn = sqlite3.connect('Part.db')
 c = conn.cursor()
 
 def driver():
+      clear_database()
       create_table()
       #clear_database()
       print ("Welcome to the Epiq Spare Parts tracking application!")
@@ -121,7 +122,7 @@ def delete_parts():
             
 def clear_database():
     c.execute("SELECT * FROM PartDB")
-    c.execute("DELETE * FROM PartDB")
+    c.execute("DELETE FROM PartDB")
     conn.commit()
     print ("Database cleared. All previous data is deleted")
 
@@ -146,7 +147,7 @@ def update_part():
         else:
             cont = False
             print ("Have a nice life :)")
-            
+
     
 #create_table()
 driver()
