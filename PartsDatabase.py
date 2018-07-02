@@ -10,6 +10,7 @@ c = conn.cursor()
 
 def driver():
       create_table()
+      #clear_database()
       print ("Welcome to the Epiq Spare Parts tracking application!")
       print ("For any needed updates or help email rregier@epiq-solutions.com")
       #time.sleep(5)
@@ -23,11 +24,11 @@ def driver():
       part_search();
       for i in range(5):
                print(" ")
-      delete_parts()
-    
+      #delete_parts()
+      update_part()  
 
 def create_table():
-    c.execute("CREATE TABLE IF NOT EXISTS PartDB(datestamp TEXT, Part TEXT, Quantity REAL, Location TEXT)")
+    c.execute("CREATE TABLE IF NOT EXISTS PartDB(datestamp TEXT, Part TEXT, Stock INTEGER, Location TEXT)")
 
 def data_entry():
     c.execute("INSERT INTO PartDB VALUES('2018-06-30','Capacitor 2',3, 'Box:5, Shelf: 10')")
@@ -39,7 +40,7 @@ def dynamic_data_entry():
     Part = 'Resistor'
     Quantity = random.randrange(0,10)
     Location = 'Shelf: ' + str(random.randrange(1,10)) + ' Box: ' + str(random.randrange(1,10))
-    c.execute("INSERT INTO PartDB (datestamp, Part, Quantity, Location) VALUES (?, ?, ?, ?)",
+    c.execute("INSERT INTO PartDB (datestamp, Part, In-Stock, Location) VALUES (?, ?, ?, ?)",
               (date, Part, Quantity, Location)) 
 
 
@@ -50,8 +51,8 @@ def part_entry(): #manually insert stuff or use scanner
     while (cont == True):
         unix = int(time.time())
         date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
-        print ("Enter the quantity below:[integer]")
-        quantity = input();
+        print ("Enter if the part is in-stock below:[0-not available, 1-available]")
+        stock = input();
         print ("Enter the location below:")
         print ("Enter the shelf number below:")
         shelf = input()
@@ -60,8 +61,8 @@ def part_entry(): #manually insert stuff or use scanner
         location = 'Shelf:' + str(shelf) + '| Box: ' + str(box)
         print ("Scan the part barcode or manually type it in below:")
         part = input()
-        c.execute("INSERT INTO PartDB (datestamp, Part, Quantity, Location) VALUES (?, ?, ?, ?)",
-              (date, part, quantity, location))
+        c.execute("INSERT INTO PartDB (datestamp, Part, Stock, Location) VALUES (?, ?, ?, ?)",
+              (date, part, stock, location))
         conn.commit()
         print (part, " was entered in correctly and is now available in the database!")
         print ("Continue scanning in more parts? [y/n]")
@@ -117,12 +118,35 @@ def delete_parts():
         else:
             cont = False
             print ("Have a nice life :)")
+            
 def clear_database():
     c.execute("SELECT * FROM PartDB")
     c.execute("DELETE * FROM PartDB")
     conn.commit()
     print ("Database cleared. All previous data is deleted")
-    
+
+def update_part():
+    cont = True
+    while (cont == True):
+        print ("Enter the serial number of the part you would like to update in the database")
+        update = input()
+        c.execute("SELECT * FROM PartDB")
+        print("Is " + update + " in stock?[y/n]")
+        ans = input()
+        if(ans == "y"):
+            c.execute("UPDATE PartDB SET Stock = 1 WHERE Part=?", (update,))
+        elif(ans == "n"):
+            c.execute("UPDATE PartDB SET Stock = 0 WHERE Part=?", (update,))
+        conn.commit()
+        print ("Successfully updated!")
+        print ("Continue updating more parts? [y/n]")
+        response = input()
+        if(response == "y"):
+            cont = True
+        else:
+            cont = False
+            print ("Have a nice life :)")
+            
     
 #create_table()
 driver()
