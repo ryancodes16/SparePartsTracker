@@ -9,20 +9,21 @@ conn = sqlite3.connect('Part.db')
 c = conn.cursor()
 
 def driver():
-    create_table()
-    print ("Welcome to the Epiq Spare Parts tracking application!")
-    print ("For any needed updates or help email rregier@epiq-solutions.com")
-    time.sleep(5)
-    print ("The following code run will be demo code to showcase how the Spare Parts Tracker is light-weight yet powerful and useful.")
-    time.sleep(5)
-    for i in range(5):
-             print(" ")
-    part_entry();
-    for i in range(5):
-             print(" ")
-    part_search();
-    for i in range(5):
-             print(" ")
+      create_table()
+      #print ("Welcome to the Epiq Spare Parts tracking application!")
+      #print ("For any needed updates or help email rregier@epiq-solutions.com")
+      #time.sleep(5)
+      #print ("The following code run will be demo code to showcase how the Spare Parts Tracker is light-weight yet powerful and useful.")
+      #time.sleep(5)
+      for i in range(5):
+               print(" ")
+      part_entry();
+      for i in range(5):
+               print(" ")
+      part_search();
+      for i in range(5):
+               print(" ")
+      delete_parts()
     
 
 def create_table():
@@ -43,6 +44,7 @@ def dynamic_data_entry():
 
 
     conn.commit()
+    
 def part_entry(): #manually insert stuff or use scanner
     cont = True
     while (cont == True):
@@ -69,7 +71,7 @@ def part_entry(): #manually insert stuff or use scanner
         else:
             cont = False
             print ("Have a nice life :)")
-            webbrowser.open('http://epiqsolutions.com')
+            #webbrowser.open('http://epiqsolutions.com')
 
 
 def part_search(): #search if a part is in stock
@@ -90,11 +92,24 @@ def select_all_tasks():
     rows = c.fetchall()
     for row in rows:
         print(row)
+        
 def select_priority(priority):
     c.execute("SELECT * FROM PartDB WHERE Part=?", (priority,))
     rows = c.fetchall()
     for row in rows:
         print(row)
+
+def delete_parts():
+##        print ("Enter the serial number of the part you would like to delete from the database")
+##        delete = "12345"
+        c.execute("SELECT * FROM PartDB")
+##        c.execute("UPDATE PartDB SET Part = '99' where Part = '12345'")
+##        c.execute("DELETE FROM PartDB WHERE Part=?", (delete,))
+##        [print(row) for row in c.fetchall()]
+##        print('done')
+        c.execute('DELETE FROM PartDB WHERE Part = 12345')
+        conn.commit()
+        
         
     
    
