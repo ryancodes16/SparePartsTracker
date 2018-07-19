@@ -1,4 +1,5 @@
 This project was a python script that used SQLITE3 as a database. It took in parts and made an inventory within the database.
+Main file is PartsDatabase.py
 
 Features: 
 -Windows Application
